@@ -1,6 +1,4 @@
-# Heroku link to festival scheduler
 
-https://festivalscheduler.herokuapp.com/CampFlogGnaw/Saturday/Lineup
 
 
 
