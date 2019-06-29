@@ -4,6 +4,7 @@ const express = require('express')
 // const cors = require('cors')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
+const env = require('dotenv')
 const app = express()
 const PORT = process.env.PORT;
 
@@ -16,7 +17,7 @@ mongoose.connection.on('disconnected', () => console.log('mongo disconnected'))
 
 
 mongoose.connect('mongodb://localhost:27017/movies', { useNewUrlParser: true })
-mongoose.connection.once('open', ()=>{
+mongoose.connection.once('open', ()=>{ 
     console.log('connected to mongoose...')
 });
 
@@ -25,7 +26,7 @@ app.use(express.json())
 
 // Routes:
 app.get('/', (req, res) => {
-  res.send('get / route')
+  res.send('get / route for movies')
 })
 
 // Listener:
