@@ -1,7 +1,9 @@
 const mongoose = require('Mongoose')
 
 const movieSchema = mongoose.Schema({
-  name: {type: String, required: true}
+  title: {type: String, required: true},
+  poster: {type: String, required: true},
+
 })
 
 const Movie = mongoose.model('Movie', movieSchema)
