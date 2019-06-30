@@ -30,6 +30,7 @@ const corsOptions = {
       callback(null, true)
     } else {
       callback(null, true)
+      // currently setting else to return info anyway so that we can temporarily view endpoints in browser. once front end functionality is set up, will block access to non whitelisted origins
 
       // callback(new Error('Not allowed by CORS lol'))
     }
