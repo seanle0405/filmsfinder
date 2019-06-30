@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt')
 const env = require('dotenv')
 const app = express()
 const PORT = process.env.PORT;
+const filmFinderController = require('./controllers/filmfinder')
 
 // Mongoose connection setup
 
@@ -17,17 +18,15 @@ mongoose.connection.on('disconnected', () => console.log('mongo disconnected'))
 
 
 mongoose.connect('mongodb://localhost:27017/movies', { useNewUrlParser: true })
-mongoose.connection.once('open', ()=>{ 
+mongoose.connection.once('open', ()=>{
     console.log('connected to mongoose...')
 });
 
 // Middlewares:
-app.use(express.json())
+app.use(express.json());
+app.use('/FilmFinder', filmFinderController)
 
-// Routes:
-app.get('/', (req, res) => {
-  res.send('get / route for movies')
-})
+
 
 // Listener:
 app.listen(PORT, () => {
