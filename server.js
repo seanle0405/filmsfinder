@@ -1,7 +1,7 @@
 // requiring dependencies
 require('dotenv').config()
 const express = require('express')
-// const cors = require('cors')
+const cors = require('cors')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const env = require('dotenv')
@@ -23,11 +23,26 @@ mongoose.connection.once('open', ()=>{
     console.log('connected to mongoose...')
 });
 
+const whitelist = ['http://localhost:3000']
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(null, true)
+
+      // callback(new Error('Not allowed by CORS lol'))
+    }
+  }
+}
+
 
 
 // Middlewares:
+app.use(cors(corsOptions))
 app.use(express.json());
 app.use('/FilmFinder', filmFinderController)
+
 
 
 

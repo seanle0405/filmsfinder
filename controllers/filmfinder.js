@@ -12,6 +12,25 @@ router.get('/', (req, res) => {
 });
 
 
+/// test seed route
+router.get('/testseed', (req, res) => {
+  console.log('in test route');
+  Movie.create(testObject, (err, data) => {
+    if (err) console.log(err);
+    res.send(data)
+  })
+})
+
+///// test route ////
+router.get('/test', (req, res) => {
+  console.log('in test route');
+  Movie.find({}, (err, data) => {
+    if (err) res.status(400).json({error: err.message})
+    res.status(200).json(data)
+  })
+})
+
+
 router.post('/', (req, res) => {
   res.send('post / route')
 });
