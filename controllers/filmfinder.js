@@ -43,7 +43,7 @@ router.get('/addMovieToUser/:id', (req, res) => {
 
   const newmovie = {title: '2001: A Space Odyssey', poster: '.jpg'}
 
-  Movie.findByIdAndUpdate(req.params.id, {$push: {movies: newmovie}}, (err, data) => {
+  Movie.findByIdAndUpdate(req.params.id, {$push: {movies: newmovie}}, {new: true}, (err, data) => {
     if (err) {
       res.status(400).json({error:err.message})
     }
