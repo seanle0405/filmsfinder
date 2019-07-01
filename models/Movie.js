@@ -6,7 +6,8 @@ const movieSchema = mongoose.Schema({
   movies: [
       {
       title: {type: String, required: true, default: 'test'},
-      poster: {type: String, required: true, default: '.jpg'}
+      poster: {type: String, required: true, default: '.jpg'},
+      watched: {type: Boolean}
     }
   ]
 })
