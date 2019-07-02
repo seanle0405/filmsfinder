@@ -44,6 +44,11 @@ const corsOptions = {
 app.use(cors(corsOptions))
 app.use(express.json());
 app.use('/FilmFinder', filmFinderController)
+app.use(session({
+  secret: "moviebuff", //this needs to move to .env
+  resave: false,
+  saveUninitialized: false
+}))
 
 
 
