@@ -53,6 +53,13 @@ router.get('/addMovieToUser/:id', (req, res) => {
 
 ////////////////////////////////////////
 
+router.get('/getUser/:id', (req, res) => {
+  Movie.find({userID: `${req.params.id}`}, (err, data) => {
+    if (err) res.status(400).json({error: err.message})
+    res.status(200).json(data)
+  })
+})
+
 
 router.post('/', (req, res) => {
   res.send('post / route')
