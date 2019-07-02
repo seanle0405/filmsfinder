@@ -3,7 +3,7 @@ const users = express.Router()
 const User = require('../models/User.js')
 const bcrypt = require('bcrypt')
 
-users.get('/newuser', (req, res) => {
+users.get('/', (req, res) => {
   User.find({}, (error, foundUser) => {
     if (error) {
       res.status(400).json({error: error.message})
