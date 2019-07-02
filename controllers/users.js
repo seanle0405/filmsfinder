@@ -13,13 +13,13 @@ users.get('/', (req, res) => {
 })
 
 users.post('/', (req, res) => {
-  req.body.password = bcrypt.hashSync(req.body.password, bcrypt.gensaltSync(15))
+  req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(15))
   User.create(req.body, (error, createdUser) => {
     if (error) {
       res.status(400).json({error: error.message})
-    } 
+    }
       res.status(200).json(createdUser)
   })
 })
 
-module.exports = router;
+module.exports = users

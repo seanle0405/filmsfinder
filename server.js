@@ -44,7 +44,7 @@ const corsOptions = {
 // Middlewares:
 app.use(cors(corsOptions))
 app.use(express.json());
-app.use('/users', usersController)
+app.use('/filmfinder/users', usersController)
 app.use('/FilmFinder', filmFinderController)
 app.use(session({
   secret: "moviebuff", //this needs to move to .env

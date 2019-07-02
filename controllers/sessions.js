@@ -4,5 +4,5 @@ const router = express.Router()
 const User = require('../models/User.js')
 
 router.get('/', (req, res) => {
-  req.session.
+  
 })
