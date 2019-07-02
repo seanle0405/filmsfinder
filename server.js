@@ -3,10 +3,12 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const mongoose = require('mongoose')
+const session = require('express-session')
 const bcrypt = require('bcrypt')
 const env = require('dotenv')
 const app = express()
 const PORT = process.env.PORT;
+const usersController = require('./controllers/users.js')
 const filmFinderController = require('./controllers/filmfinder')
 
 // Mongoose connection setup
@@ -42,7 +44,13 @@ const corsOptions = {
 // Middlewares:
 app.use(cors(corsOptions))
 app.use(express.json());
+app.use('/filmfinder/users', usersController)
 app.use('/FilmFinder', filmFinderController)
+app.use(session({
+  secret: "moviebuff", //this needs to move to .env
+  resave: false,
+  saveUninitialized: false
+}))
 
 
 
