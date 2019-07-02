@@ -14,12 +14,7 @@ const testObject = {
 }
 
 router.get('/', (req, res) => {
-  Movie.find({} , (err, foundMovie) => {
-    if(err){
-      res.status(400).json({error : err.message})
-    }
-      res.status(200).json(foundMovie)
-  })
+  res.send('get / route')
 });
 
 
@@ -69,30 +64,15 @@ router.get('/getUser/:id', (req, res) => {
 
 
 router.post('/', (req, res) => {
- Movie.create(req.body, (error, createMovie) => {
-    if (error) {
-      res.status(400).json({ error: error.message })
-    }
-    res.status(200).json(createMovie) //  .json() will send proper headers in response so client knows it's json coming back
-  })
+  res.send('post / route')
 });
 
 router.put('/', (req, res) => {
-  Movie.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err, updateMovie) => {
-    if (err) {
-      res.status(400).json({ error: err.message })
-    }
-    res.status(200).json(updateMovie)
-  })
+  res.send('put / route')
 });
 
 router.delete('/', (req, res) => {
- Movie.findByIdAndRemove(req.params.id, (err, deleteMovie) => {
-    if (err) {
-      res.status(400).json({ error: err.message })
-    }
-    res.status(200).json(deleteMovie)
-  })
+  res.send('delete / route')
 })
 
 module.exports = router
