@@ -5,6 +5,7 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 const session = require('express-session')
 const bcrypt = require('bcrypt')
+const SECRET = process.env.secret
 const env = require('dotenv')
 const app = express()
 const PORT = process.env.PORT;
@@ -47,7 +48,7 @@ app.use(express.json());
 app.use('/filmfinder/users', usersController)
 app.use('/FilmFinder', filmFinderController)
 app.use(session({
-  secret: "moviebuff", //this needs to move to .env
+  secret: SECRET,
   resave: false,
   saveUninitialized: false
 }))
