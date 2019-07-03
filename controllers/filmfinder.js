@@ -74,7 +74,6 @@ router.post('/', (req, res) => {
     res.status(200).json(createMovie) //  .json() will send proper headers in response so client knows it's json coming back
   })
 });
-
 router.put('/', (req, res) => {
   Movie.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err, updateMovie) => {
     if (err) {
@@ -91,6 +90,7 @@ router.delete('/', (req, res) => {
     }
     res.status(200).json(deleteMovie)
   })
+
 })
 
 module.exports = router
