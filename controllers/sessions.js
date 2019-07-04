@@ -5,11 +5,11 @@ const User = require('../models/User.js')
 
 session.post('/', (req, res) => {
   User.findOne(
-    { username: req.body.username }, (error, foundUser) => {
-      if (error) res.status(400).json({error: error.message})
+    { username: req.body.username },
+    (error, foundUser) => {
       if (bcrypt.compareSync(req.body.password, foundUser.password)) {
         req.session.currentUser = foundUser
-        res.status(200).json(foundUser)
+        res.status(200).json({foundUser})
       } else {
         res.send('incorrect login info')
       }
