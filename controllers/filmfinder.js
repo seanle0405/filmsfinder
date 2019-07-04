@@ -39,12 +39,11 @@ router.get('/test', (req, res) => {
 
 //////test add movie route //////////////////////////////////
 
-router.get('/addMovieToUser/:id', (req, res) => {
-
-
-  const newmovie = {title: '2001: A Space Odyssey', poster: '.jpg'}
-
-  Movie.findByIdAndUpdate(req.params.id, {$push: {movies: newmovie}}, {new: true}, (err, data) => {
+router.post('/addMovie', (req, res) => {
+  const {username} = req.body
+  const {movie} = req.body
+  console.log('username:', username, 'movie: ', movie);
+  Movie.findOneAndUpdate({userID: username}, {$push: {movies: movie}}, {new: true}, (err, data) => {
     if (err) {
       res.status(400).json({error:err.message})
     }
@@ -90,11 +89,11 @@ router.get("/search/:title", (req, res) =>{
         }
         if(movie.title){
           data.push(movie)
-        }       
+        }
       }
       res.send(data)
     }
-    
+
   })
 
 })
