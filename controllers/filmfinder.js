@@ -88,6 +88,31 @@ router.get("/search/:title", (req, res) =>{
           }
           movie.genres = genresArr
         }
+        movie.synopsis = body.movies[i].synopsis
+        if(body.movies[i].scene_images){
+          let imageArr = []
+          for(let j = 0; j < body.movies[i].scene_images.length; j++){
+            let fileArr = body.movies[i].scene_images[j].image_files            
+            imageArr.push(fileArr[fileArr.length - 1].url)
+          }
+         movie.scene_images = imageArr
+        }
+        if(body.movies[i].trailers){
+          movie.trailer = body.movies[i].trailers[0].trailer_files[0].url
+        }
+        if(body.movies[i].ratings){
+          if(body.movies[i].ratings.imdb){
+            movie.imdb_rating = body.movies[i].ratings.imdb.value
+          }
+        }
+        if(body.movies[i].release_dates){
+          if(body.movies[i].release_dates.US){
+            movie.release_dates = body.movies[i].release_dates.US[0].date
+          }
+        }
+        movie.imdb_id = body.movies[i].imdb_id
+        movie.cast = body.movies[i].cast
+        movie.crew = body.movies[i].crew
         if(movie.title){
           data.push(movie)
         }       
