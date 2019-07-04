@@ -62,6 +62,57 @@ router.get('/getUser/:id', (req, res) => {
 })
 
 
+const formatMovies = (movies) =>{
+  let data = []
+      for(let i = 0; i < movies.length; i++){
+        const movie = {poster: ""}
+        movie.title = movies[i].title
+        if(movies[i].poster_image){
+          if(movies[i].poster_image.image_files){
+            let imageArr = movies[i].poster_image.image_files
+            movie.poster = imageArr[imageArr.length-1].url
+          }
+        }
+        if(movies[i].genres){
+          let genresData = movies[i].genres
+          let genresArr = []
+          for(let i = 0; i < genresData.length; i++){
+            genresArr.push(genresData[i].name)
+          }
+          movie.genres = genresArr
+        }
+        movie.synopsis = movies[i].synopsis
+        if(movies[i].scene_images){
+          let imageArr = []
+          for(let j = 0; j < movies[i].scene_images.length; j++){
+            let fileArr = movies[i].scene_images[j].image_files            
+            imageArr.push(fileArr[fileArr.length - 1].url)
+          }
+         movie.scene_images = imageArr
+        }
+        if(movies[i].trailers){
+          movie.trailer = movies[i].trailers[0].trailer_files[0].url
+        }
+        if(movies[i].ratings){
+          if(movies[i].ratings.imdb){
+            movie.imdb_rating = movies[i].ratings.imdb.value
+          }
+        }
+        if(movies[i].release_dates){
+          if(movies[i].release_dates.US){
+            movie.release_dates = movies[i].release_dates.US[0].date
+          }
+        }
+        movie.imdb_id = movies[i].imdb_id
+        movie.cast = movies[i].cast
+        movie.crew = movies[i].crew
+        if(movie.title){
+          data.push(movie)
+        }       
+      }
+      return data
+}
+
 
 //Showtimes API search by title
 
@@ -70,60 +121,38 @@ router.get("/search/:title", (req, res) =>{
     if(err){
       res.send(err)
     }else{
-      let data = []
-      for(let i = 0; i < body.movies.length; i++){
-        const movie = {poster: ""}
-        movie.title = body.movies[i].title
-        if(body.movies[i].poster_image){
-          if(body.movies[i].poster_image.image_files){
-            let imageArr = body.movies[i].poster_image.image_files
-            movie.poster = imageArr[imageArr.length-1].url
-          }
-        }
-        if(body.movies[i].genres){
-          let genresData = body.movies[i].genres
-          let genresArr = []
-          for(let i = 0; i < genresData.length; i++){
-            genresArr.push(genresData[i].name)
-          }
-          movie.genres = genresArr
-        }
-        movie.synopsis = body.movies[i].synopsis
-        if(body.movies[i].scene_images){
-          let imageArr = []
-          for(let j = 0; j < body.movies[i].scene_images.length; j++){
-            let fileArr = body.movies[i].scene_images[j].image_files            
-            imageArr.push(fileArr[fileArr.length - 1].url)
-          }
-         movie.scene_images = imageArr
-        }
-        if(body.movies[i].trailers){
-          movie.trailer = body.movies[i].trailers[0].trailer_files[0].url
-        }
-        if(body.movies[i].ratings){
-          if(body.movies[i].ratings.imdb){
-            movie.imdb_rating = body.movies[i].ratings.imdb.value
-          }
-        }
-        if(body.movies[i].release_dates){
-          if(body.movies[i].release_dates.US){
-            movie.release_dates = body.movies[i].release_dates.US[0].date
-          }
-        }
-        movie.imdb_id = body.movies[i].imdb_id
-        movie.cast = body.movies[i].cast
-        movie.crew = body.movies[i].crew
-        if(movie.title){
-          data.push(movie)
-        }       
-      }
-      res.send(data)
+        res.send(formatMovies(body.movies))
     }
     
   })
 
 })
 
+//Get recent releases from Showtimes API
+router.get("/recent_releases", (req, res) =>{
+  let cityId = 3945
+  let releaseDate = '06-01-19'
+
+  let showtimesBaseURL = `https://api.internationalshowtimes.com/v4/`
+  let moviesParam = 'movies/'
+  let timesParam = 'showtimes/'
+  let showtimesAPIKey = `?apikey=dHNYEAlSVxOXC4Eqy6b8aufIXC7utYnu`
+  let releaseDateParam = '&release_date_from=' + releaseDate
+  let countryParam = `&countries=US`
+  let fieldsParam = `&all_fields=true`
+  let cityParam = `&city_ids=` + cityId
+
+  let getRecentReleasesURL = showtimesBaseURL+moviesParam+showtimesAPIKey+releaseDateParam+countryParam+fieldsParam+cityParam
+
+  request.get(getRecentReleasesURL, {json: true}, (err, response, body) =>{
+    if(err){
+      res.send(err)
+    }else{
+      res.send(formatMovies(body.movies))
+    }
+  })
+
+})
 
 router.post('/', (req, res) => {
   res.send('post / route')
