@@ -14,12 +14,13 @@ users.get('/', (req, res) => {
 })
 
 users.post('/', (req, res) => {
-  req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(15))
+  req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(15)).
+
   User.create(req.body, (error, createdUser) => {
     if (error) {
       res.status(400).json({error: error.message})
     } else {
-      console.log(createdUser.username);
+      console.log();
         Movie.create({'userID': createdUser.username}, {new:true}, (err, newuser) => {
           if (err) {
             console.log(err);
