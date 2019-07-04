@@ -47,6 +47,7 @@ router.post('/addMovie', (req, res) => {
     if (err) {
       res.status(400).json({error:err.message})
     }
+    console.log('sending data: ', data);
     res.status(200).json(data)
   })
 })
@@ -107,8 +108,21 @@ router.put('/', (req, res) => {
   res.send('put / route')
 });
 
+
+
+
 router.delete('/', (req, res) => {
-  res.send('delete / route')
+  const id = req.body.movie._id;
+  const {username} = req.body;
+  console.log('id: ', id, 'user: ', username);
+
+  Movie.findOneAndUpdate({userID: username}, {$pull: {movies: {_id: id}}}, {new:true}, (err, data) => {
+    if (err) {
+      res.status(400).json({error: err.message})
+    }
+    res.status(200).json(data)
+  })
+
 })
 
 module.exports = router
