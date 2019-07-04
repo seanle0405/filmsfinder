@@ -8,8 +8,7 @@ session.post('/', (req, res) => {
     { username: req.body.username },
     (error, foundUser) => {
       if (bcrypt.compareSync(req.body.password, foundUser.password)) {
-        req.session.currentUser = foundUser
-        res.status(200).json({foundUser})
+        res.status(200).json({foundUser: foundUser.username})
       } else {
         res.send('incorrect login info')
       }
