@@ -6,6 +6,7 @@ const movieSchema = mongoose.Schema({
   city: {type: Number},
   movies: [
       {
+      watched: {type: Boolean},
       title: {type: String},
       poster: {type: String},
       genres: [String],
@@ -24,10 +25,10 @@ const movieSchema = mongoose.Schema({
       	id: String,
       	name: String,
       	job: String
-      }], 
-      watched: {type: Boolean}
+      }],
     }
-  ]
+  ],
+
 })
 
 const Movie = mongoose.model('Movie', movieSchema)

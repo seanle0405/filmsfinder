@@ -24,13 +24,15 @@ router.get('/', (req, res) => {
 router.post('/addMovie', (req, res) => {
   const {username} = req.body
   const {movie} = req.body
-  console.log('username:', username, 'movie: ', movie);
+  console.log(username, ' username');
   Movie.findOneAndUpdate({userID: username}, {$push: {movies: movie}}, {new: true}, (err, data) => {
     if (err) {
       res.status(400).json({error:err.message})
+    } else {
+      console.log('sending data: ', data);
+      res.status(200).json(data)
     }
-    console.log('sending data: ', data);
-    res.status(200).json(data)
+
   })
 })
 
@@ -71,7 +73,7 @@ const formatMovies = (movies) =>{
         if(movies[i].scene_images){
           let imageArr = []
           for(let j = 0; j < movies[i].scene_images.length; j++){
-            let fileArr = movies[i].scene_images[j].image_files            
+            let fileArr = movies[i].scene_images[j].image_files
             imageArr.push(fileArr[fileArr.length - 1].url)
           }
          movie.scene_images = imageArr
