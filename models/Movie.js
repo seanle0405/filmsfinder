@@ -5,8 +5,24 @@ const movieSchema = mongoose.Schema({
   name: {type: String},
   movies: [
       {
-      title: {type: String, required: true, default: 'test'},
-      poster: {type: String, required: true, default: '.jpg'},
+      title: {type: String},
+      poster: {type: String},
+      synopsis: {type: String},
+      scene_images: [String],
+      trailer: String,
+      imdb_rating: Number,
+      imdb_id: String,
+      release_date: String,
+      cast: [{
+      	id: String,
+      	character: String,
+      	name: String
+      }],
+      crew: [{
+      	id: String,
+      	name: String,
+      	job: String
+      }], 
       watched: {type: Boolean}
     }
   ]
