@@ -10,7 +10,7 @@ session.post('/', (req, res) => {
       if (bcrypt.compareSync(req.body.password, foundUser.password)) {
         res.status(200).json({foundUser: foundUser.username})
       } else {
-        res.send('incorrect login info')
+        res.status(400).json({error: error.message})
       }
     }
   )
