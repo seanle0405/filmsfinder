@@ -19,35 +19,17 @@ router.get('/', (req, res) => {
 });
 
 
-/// test seed route////////////////////////////////////
-router.get('/testseed', (req, res) => {
-
-  Movie.create(testObject, (err, data) => {
-    if (err) console.log(err);
-    res.send(data)
-  })
-})
-
-///// test route ////
-router.get('/test', (req, res) => {
-
-  Movie.find({}, (err, data) => {
-    if (err) res.status(400).json({error: err.message})
-    res.status(200).json(data)
-  })
-})
-
-//////test add movie route //////////////////////////////////
-
-router.get('/addMovieToUser/:id', (req, res) => {
 
 
-  const newmovie = {title: '2001: A Space Odyssey', poster: '.jpg'}
-
-  Movie.findByIdAndUpdate(req.params.id, {$push: {movies: newmovie}}, {new: true}, (err, data) => {
+router.post('/addMovie', (req, res) => {
+  const {username} = req.body
+  const {movie} = req.body
+  console.log('username:', username, 'movie: ', movie);
+  Movie.findOneAndUpdate({userID: username}, {$push: {movies: movie}}, {new: true}, (err, data) => {
     if (err) {
       res.status(400).json({error:err.message})
     }
+    console.log('sending data: ', data);
     res.status(200).json(data)
   })
 })
@@ -65,6 +47,7 @@ router.get('/getUser/:id', (req, res) => {
 const formatMovies = (movies) =>{
   let data = []
       for(let i = 0; i < movies.length; i++){
+
         const movie = {poster: ""}
         movie.title = movies[i].title
         if(movies[i].poster_image){
@@ -108,7 +91,7 @@ const formatMovies = (movies) =>{
         movie.crew = movies[i].crew
         if(movie.title){
           data.push(movie)
-        }       
+        }
       }
       return data
 }
@@ -123,7 +106,7 @@ router.get("/search/:title", (req, res) =>{
     }else{
         res.send(formatMovies(body.movies))
     }
-    
+
   })
 
 })
@@ -162,8 +145,20 @@ router.put('/', (req, res) => {
   res.send('put / route')
 });
 
+
+
+
 router.delete('/', (req, res) => {
-  res.send('delete / route')
+  const id = req.body.movie._id;
+  const {username} = req.body;
+  console.log('id: ', id, 'user: ', username);
+  Movie.findOneAndUpdate({userID: username}, {$pull: {movies: {_id: id}}}, {new:true}, (err, data) => {
+    if (err) {
+      res.status(400).json({error: err.message})
+    }
+    res.status(200).json(data)
+  })
+
 })
 
 module.exports = router
