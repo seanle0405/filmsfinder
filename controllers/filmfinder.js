@@ -2,6 +2,10 @@ const express = require('express')
 const router = express.Router()
 const Movie = require('../models/Movie.js')
 const request = require("request")
+const showtimesAPIKey = process.env.showtimesAPIKey
+const guideboxAPIKey = process.env.guideboxAPIKey
+const moment = require("moment")
+const cities = require("../data/showtimesCities.js")
 
 const testObject = {
   userID: 'testUserName',
@@ -105,7 +109,7 @@ const formatMovies = (movies) =>{
 //Showtimes API search by title
 
 router.get("/search/:title", (req, res) =>{
-  request.get("https://api.internationalshowtimes.com/v4/movies?apikey=dHNYEAlSVxOXC4Eqy6b8aufIXC7utYnu&search_field=original_title&include_outdated=true&all_fields=true&search_query=" +req.params.title, {json: true}, (err, response, body) =>{
+  request.get("https://api.internationalshowtimes.com/v4/movies?apikey="+showtimesAPIKey+"&search_field=original_title&include_outdated=true&all_fields=true&search_query=" +req.params.title, {json: true}, (err, response, body) =>{
     if(err){
       res.send(err)
     }else{
@@ -201,8 +205,8 @@ router.get("/testsearch3", (req,res) =>{
       poster: "https://cdn.shopify.com/s/files/1/1416/8662/products/titanic_1997_french_grande_original_film_art_2000x.jpg?v=1558250674",
       genres: ["Drama", "Romance"],
       synopsis: "A seventeen-year-old aristocrat falls in love with a kind but poor artist aboard the luxurious, ill-fated R.M.S. Titanic.",
-      scene_images: [],
-      trailer: "",
+      scene_images: ["https://pixel.nymag.com/imgs/daily/vulture/2017/12/07/07-titanic.w600.h315.2x.jpg", "https://i.pinimg.com/originals/17/de/63/17de631fb19a739677253ce30453c38d.jpg", "https://www.hindustantimes.com/rf/image_size_960x540/HT/p2/2018/02/18/Pictures/_6edad41a-1474-11e8-82d6-43c3cccec057.jpg"],
+      trailer: "https://www.youtube.com/watch?v=zCy5WQ9S4c0",
       imdb_rating: 7.8,
       imdb_id: "tt0120338",
       cast: [{character: "Jack Dawson", name: "Leonardo DiCaprio"}, {character: "Rose Dewitt Bukater", name: "Kate Winslet"}],
@@ -213,19 +217,19 @@ router.get("/testsearch3", (req,res) =>{
 })
 //Get recent releases from Showtimes API
 router.get("/recent_releases", (req, res) =>{
-  let cityId = 3945
-  let releaseDate = '06-01-19'
+  let cityId = 2215
+  let releaseDate = moment().format("MM-DD-YYYY")
 
   let showtimesBaseURL = `https://api.internationalshowtimes.com/v4/`
   let moviesParam = 'movies/'
   let timesParam = 'showtimes/'
-  let showtimesAPIKey = `?apikey=dHNYEAlSVxOXC4Eqy6b8aufIXC7utYnu`
+  let APIKey = `?apikey=` + showtimesAPIKey
   let releaseDateParam = '&release_date_from=' + releaseDate
   let countryParam = `&countries=US`
   let fieldsParam = `&all_fields=true`
   let cityParam = `&city_ids=` + cityId
 
-  let getRecentReleasesURL = showtimesBaseURL+moviesParam+showtimesAPIKey+releaseDateParam+countryParam+fieldsParam+cityParam
+  let getRecentReleasesURL = showtimesBaseURL+moviesParam+APIKey+releaseDateParam+countryParam+fieldsParam+cityParam
 
   request.get(getRecentReleasesURL, {json: true}, (err, response, body) =>{
     if(err){
@@ -236,6 +240,30 @@ router.get("/recent_releases", (req, res) =>{
   })
 
 })
+
+
+//Guibox API calls
+router.get("/sources/:imdb_id", (req,res) =>{
+  request.get("http://api-public.guidebox.com/v2/search?api_key=5c80cea61b2eed1db3cccae4048691042fb592ca&type=movie&field=id&id_type=imdb&query=" + req.params.imdb_id, {json: true}, (err, response, body) =>{
+    if(err){
+      res.send(err)
+    }else{
+      let guidebox_id = body.id
+        request.get("http://api-public.guidebox.com/v2/movies/"+guidebox_id+"?api_key=5c80cea61b2eed1db3cccae4048691042fb592ca", {json: true}, (err, response, body) =>{
+          if(err){
+            res.send(err)
+          }else{
+            let sources = {}
+            sources.subscription_sources = body.subscription_web_sources
+            sources.purchase_sources = body.purchase_web_sources
+            res.send(sources)
+          }
+        })
+    }
+  })
+})
+
+
 
 router.post('/', (req, res) => {
   res.send('post / route')
