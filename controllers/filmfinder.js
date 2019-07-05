@@ -64,6 +64,9 @@ router.get('/getUser/:id', (req, res) => {
 
 const formatMovies = (movies) =>{
   let data = []
+      if(!movies){
+        return data
+      }
       for(let i = 0; i < movies.length; i++){
         const movie = {poster: ""}
         movie.title = movies[i].title
