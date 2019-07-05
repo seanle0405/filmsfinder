@@ -19,25 +19,7 @@ router.get('/', (req, res) => {
 });
 
 
-/// test seed route////////////////////////////////////
-router.get('/testseed', (req, res) => {
 
-  Movie.create(testObject, (err, data) => {
-    if (err) console.log(err);
-    res.send(data)
-  })
-})
-
-///// test route ////
-router.get('/test', (req, res) => {
-
-  Movie.find({}, (err, data) => {
-    if (err) res.status(400).json({error: err.message})
-    res.status(200).json(data)
-  })
-})
-
-//////test add movie route //////////////////////////////////
 
 router.post('/addMovie', (req, res) => {
   const {username} = req.body
@@ -115,7 +97,6 @@ router.delete('/', (req, res) => {
   const id = req.body.movie._id;
   const {username} = req.body;
   console.log('id: ', id, 'user: ', username);
-
   Movie.findOneAndUpdate({userID: username}, {$pull: {movies: {_id: id}}}, {new:true}, (err, data) => {
     if (err) {
       res.status(400).json({error: err.message})
