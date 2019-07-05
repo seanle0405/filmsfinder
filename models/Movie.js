@@ -8,6 +8,7 @@ const movieSchema = mongoose.Schema({
       {
       title: {type: String},
       poster: {type: String},
+      genres: [String],
       synopsis: {type: String},
       scene_images: [String],
       trailer: String,
