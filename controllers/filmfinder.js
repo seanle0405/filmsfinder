@@ -51,7 +51,8 @@ router.get("/search/:title", (req, res) =>{
   request.get("https://api.internationalshowtimes.com/v4/movies?apikey=dHNYEAlSVxOXC4Eqy6b8aufIXC7utYnu&search_field=original_title&include_outdated=true&all_fields=true&search_query=" +req.params.title, {json: true}, (err, response, body) =>{
     if(err){
       res.send(err)
-    }else{
+    } else {
+      console.log(body);
       let data = []
       for(let i = 0; i < body.movies.length; i++){
         const movie = {poster: ""}
