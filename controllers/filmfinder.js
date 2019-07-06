@@ -19,10 +19,29 @@ const testObject = {
 }
 
 router.get('/', (req, res) => {
-  res.send('get / route')
+  Movie.find({}, (err,data) =>{
+    if (err) {
+      res.status(400).json({error:err.message})
+    } else {
+      console.log('sending data: ', data);
+      res.status(200).json(data)
+    }
+  })
 });
 
+router.put("/updateMovie/:id", (req,res) =>{
+  const {username} = req.body
+  const {movies} = req.body
+  Movie.findOneAndUpdate({userID: username}, {movies: movies}, {new: true}, (err, data) => {
+    if (err) {
+      res.status(400).json({error:err.message})
+    } else {
+      console.log('sending data: ', data);
+      res.status(200).json(data)
+    }
 
+  })
+})
 
 
 router.post('/addMovie', (req, res) => {
@@ -39,6 +58,8 @@ router.post('/addMovie', (req, res) => {
 
   })
 })
+
+
 
 ////////////////////////////////////////
 
