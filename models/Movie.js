@@ -31,7 +31,6 @@ const movieSchema = mongoose.Schema({
       personal_rating: String,
     }
   ],
-
 })
 
 const Movie = mongoose.model('Movie', movieSchema)
