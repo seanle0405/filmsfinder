@@ -155,7 +155,7 @@ const formatShowtimes = (showtimesArray, cityId) =>{
     }
   }
   data.push(cinema)
-  
+
   return data
 }
 //Showtimes API search by title
@@ -197,7 +197,7 @@ router.get("/recent_releases/:user_city", (req, res) =>{
 
 })
 
-//Get Showtimes for movie 
+//Get Showtimes for movie
 router.get("/showtimes/:user_city/:movie_id", (req, res) =>{
   request.get("https://api.internationalshowtimes.com/v4/showtimes/?apikey="+showtimesAPIKey+"&movie_id="+req.params.movie_id+"&city_ids=" +req.params.user_city, {json: true}, (err, response, body) =>{
     if(err){

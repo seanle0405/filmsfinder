@@ -27,7 +27,7 @@ mongoose.connection.once('open', ()=>{
     console.log('connected to mongoose...')
 });
 
-const whitelist = ['http://localhost:3000']
+const whitelist = ['http://localhost:3000, https://seanle0405.github.io/']
 const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
