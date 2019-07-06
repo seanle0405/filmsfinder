@@ -15,6 +15,7 @@ const movieSchema = mongoose.Schema({
       trailer: String,
       imdb_rating: Number,
       imdb_id: String,
+      showtimes_id: String,
       release_date: String,
       cast: [{
       	id: String,
@@ -26,6 +27,8 @@ const movieSchema = mongoose.Schema({
       	name: String,
       	job: String
       }],
+      personal_review: String,
+      personal_rating: String,
     }
   ],
 
