@@ -216,10 +216,9 @@ router.get("/testsearch3", (req,res) =>{
   res.send(titanic)
 })
 //Get recent releases from Showtimes API
-router.get("/recent_releases", (req, res) =>{
-  let cityId = 2215
-  let releaseDate = moment().format("MM-DD-YYYY")
-
+router.get("/recent_releases/:user_city", (req, res) =>{
+  let cityId = req.params.user_city
+  let releaseDate = moment().subtract(1, "months").format("MM-DD-YYYY")
   let showtimesBaseURL = `https://api.internationalshowtimes.com/v4/`
   let moviesParam = 'movies/'
   let timesParam = 'showtimes/'

@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const movieSchema = mongoose.Schema({
   userID: {type: String, required: true},
   name: {type: String},
-  city: {type: Number},
+  city: {type: String},
   movies: [
       {
       watched: {type: Boolean},
