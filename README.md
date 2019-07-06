@@ -41,7 +41,7 @@ Movie lovers
 
 - Will use Trello as daily tracking tool:
 https://trello.com/b/tzXg45hZ/filmfinder
-- User can log-in(Authorization)
+- User can log-in & log-out (Authorization)
 - 3rd Party API
       - GuideBox &
        OMDB
