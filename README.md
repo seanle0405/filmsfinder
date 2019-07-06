@@ -43,5 +43,5 @@ Movie lovers
 https://trello.com/b/tzXg45hZ/filmfinder
 - User can log-in(Authorization)
 - 3rd Party API
-      - GuideBox
-      - OMDB
+      - GuideBox &
+       OMDB
